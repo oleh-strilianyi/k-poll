@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useLocalStorage } from './hooks/useLocalStorage';
+import type { ParticipantsState, ParticipantData } from './types';
+import { participants } from './data/participants';
+import Header from './components/Header';
+import ParticipantRow from './components/ParticipantRow';
+import './App.css';
+
+// Initialize default data for all participants
+const getInitialData = (): ParticipantsState => {
+  const initial: ParticipantsState = {};
+  participants.forEach(participant => {
+    initial[participant.id] = {
+      comment: '',
+      willContinue: true, // Default to rose
+      rating: 0, // Default to no rating
+    };
+  });
+  return initial;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [participantsData, setParticipantsData] = useLocalStorage<ParticipantsState>(
+    'kholostyak-poll-data',
+    getInitialData()
+  );
+
+  const handleDataChange = (id: number, data: ParticipantData) => {
+    setParticipantsData(prev => ({
+      ...prev,
+      [id]: data,
+    }));
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <Header />
+      <div className="table-container">
+        <table className="participants-table">
+          <thead>
+            <tr>
+              <th>Учасниця</th>
+              <th>Коментар</th>
+              <th>Прогноз</th>
+              <th>Рейтинг</th>
+            </tr>
+          </thead>
+          <tbody>
+            {participants.map(participant => (
+              <ParticipantRow
+                key={participant.id}
+                participant={participant}
+                data={participantsData[participant.id] || { comment: '', willContinue: true, rating: 0 }}
+                onDataChange={(data) => handleDataChange(participant.id, data)}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
