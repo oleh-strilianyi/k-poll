@@ -67,7 +67,7 @@ export default function MobileRating({
 }: MobileRatingProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [tempRating, setTempRating] = useState(rating);
-  const [holdTimer, setHoldTimer] = useState<NodeJS.Timeout | null>(null);
+  const [holdTimer, setHoldTimer] = useState<number | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
