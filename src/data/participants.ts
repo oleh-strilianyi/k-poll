@@ -20,4 +20,5 @@ export const participants: Participant[] = [
   { id: 13, name: 'Ольга фітнес тренер', imageUrl: `${BASE_URL}images/13.jpg` },
   { id: 14, name: 'Юля фешн фотограф', imageUrl: `${BASE_URL}images/14.jpg` },
   { id: 15, name: 'Іра шапка з аврори', imageUrl: `${BASE_URL}images/15.jpg` },
+  { id: 16, name: 'Діана Зотова', imageUrl: `${BASE_URL}images/16.jpg` },
 ];
