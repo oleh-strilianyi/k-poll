@@ -1,9 +1,15 @@
+import { useState, useEffect } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import type { ParticipantsState, ParticipantData } from './types';
 import { participants } from './data/participants';
 import Header from './components/Header';
 import ParticipantRow from './components/ParticipantRow';
+import ClearDataModal from './components/ClearDataModal';
 import styles from './App.module.css';
+
+const CURRENT_WEEK_ID = 2;
+const WEEK_ID_KEY = 'kholostyak-poll-week-id';
+const DATA_KEY = 'kholostyak-poll-data';
 
 const getInitialData = (): ParticipantsState => {
   const initial: ParticipantsState = {};
@@ -19,7 +25,52 @@ const getInitialData = (): ParticipantsState => {
 
 function App() {
   const [participantsData, setParticipantsData] =
-    useLocalStorage<ParticipantsState>('kholostyak-poll-data', getInitialData());
+    useLocalStorage<ParticipantsState>(DATA_KEY, getInitialData());
+
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+
+  useEffect(() => {
+    const checkWeek = () => {
+      const storedWeekId = window.localStorage.getItem(WEEK_ID_KEY);
+      const storedData = window.localStorage.getItem(DATA_KEY);
+
+      if (storedWeekId !== JSON.stringify(CURRENT_WEEK_ID) && storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          const initialData = getInitialData();
+
+          if (JSON.stringify(parsedData) !== JSON.stringify(initialData)) {
+            setIsClearModalOpen(true);
+          } else {
+            window.localStorage.setItem(
+              WEEK_ID_KEY,
+              JSON.stringify(CURRENT_WEEK_ID)
+            );
+          }
+        } catch (e) {
+          setIsClearModalOpen(true);
+        }
+      } else if (!storedWeekId) {
+        window.localStorage.setItem(
+          WEEK_ID_KEY,
+          JSON.stringify(CURRENT_WEEK_ID)
+        );
+      }
+    };
+
+    checkWeek();
+  }, []);
+
+  const handleClearData = () => {
+    setParticipantsData(getInitialData());
+    window.localStorage.setItem(WEEK_ID_KEY, JSON.stringify(CURRENT_WEEK_ID));
+    setIsClearModalOpen(false);
+  };
+
+  const handleKeepData = () => {
+    window.localStorage.setItem(WEEK_ID_KEY, JSON.stringify(CURRENT_WEEK_ID));
+    setIsClearModalOpen(false);
+  };
 
   const handleDataChange = (id: number, data: ParticipantData) => {
     setParticipantsData((prev) => ({
@@ -59,6 +110,12 @@ function App() {
           </tbody>
         </table>
       </div>
+
+      <ClearDataModal
+        isOpen={isClearModalOpen}
+        onClear={handleClearData}
+        onKeep={handleKeepData}
+      />
     </div>
   );
 }
