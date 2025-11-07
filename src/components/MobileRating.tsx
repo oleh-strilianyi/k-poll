@@ -118,7 +118,7 @@ export default function MobileRating({
         const badgeTopY = rect.top;
 
         showTooltip(
-          'Натисніть та проведіть',
+          'Треба затиснути',
           badgeCenterX - 60, 
           badgeTopY           
         );
