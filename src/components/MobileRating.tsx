@@ -16,7 +16,6 @@ export default function MobileRating({
   const [tempRating, setTempRating] = useState(rating);
   const [popupStyle, setPopupStyle] = useState<React.CSSProperties>({});
   const [isTap, setIsTap] = useState(false);
-  // const [touchStartPos, setTouchStartPos] = useState({ x: 0, y: 0 }); // <-- ВИДАЛЕНО
   const sliderRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -46,7 +45,6 @@ export default function MobileRating({
       const spaceBelow = viewportHeight - triggerRect.bottom;
       const spaceAbove = triggerRect.top;
 
-      // (FIX 1) Пріоритет для позиції ВГОРІ
       if (spaceAbove > popupRect.height + 8) {
         style.top = triggerRect.top - popupRect.height - 8;
       } else if (spaceBelow > popupRect.height + 8) {
@@ -85,7 +83,6 @@ export default function MobileRating({
   const handleTouchStart = (e: React.TouchEvent) => {
     e.preventDefault();
     setIsTap(true);
-    // setTouchStartPos({ x: e.touches[0].clientX, y: e.touches[0].clientY }); // <-- ВИДАЛЕНО
     setTempRating(rating);
 
     if (holdTimerRef.current) {
@@ -115,22 +112,15 @@ export default function MobileRating({
     if (isTap) {
       setIsTap(false);
 
-      // (FIX 2 - Нова версія)
-      // Отримуємо позицію самої кнопки (rate badge)
       if (triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
-        
-        // Розраховуємо центр кнопки по осі X
         const badgeCenterX = rect.left + rect.width / 2;
-        
-        // Беремо верхню точку кнопки по осі Y
         const badgeTopY = rect.top;
 
-        // Показуємо тултіп відносно кнопки зі зсувом 120px вліво, як ти і просив
         showTooltip(
           'Натисніть та проведіть',
-          badgeCenterX - 120, // X: Центр кнопки - 120px
-          badgeTopY            // Y: Верх кнопки (тултіп з'явиться над нею)
+          badgeCenterX - 60, 
+          badgeTopY           
         );
       }
     }
