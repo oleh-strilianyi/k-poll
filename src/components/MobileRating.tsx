@@ -16,7 +16,7 @@ export default function MobileRating({
   const [tempRating, setTempRating] = useState(rating);
   const [popupStyle, setPopupStyle] = useState<React.CSSProperties>({});
   const [isTap, setIsTap] = useState(false);
-  const [touchStartPos, setTouchStartPos] = useState({ x: 0, y: 0 });
+  const [setTouchStartPos] = useState({ x: 0, y: 0 });
   const sliderRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
