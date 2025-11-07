@@ -16,7 +16,7 @@ export default function MobileRating({
   const [tempRating, setTempRating] = useState(rating);
   const [popupStyle, setPopupStyle] = useState<React.CSSProperties>({});
   const [isTap, setIsTap] = useState(false);
-  const [touchStartPos, setTouchStartPos] = useState({ x: 0, y: 0 });
+  // const [touchStartPos, setTouchStartPos] = useState({ x: 0, y: 0 }); // <-- ВИДАЛЕНО
   const sliderRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -85,7 +85,7 @@ export default function MobileRating({
   const handleTouchStart = (e: React.TouchEvent) => {
     e.preventDefault();
     setIsTap(true);
-    setTouchStartPos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+    // setTouchStartPos({ x: e.touches[0].clientX, y: e.touches[0].clientY }); // <-- ВИДАЛЕНО
     setTempRating(rating);
 
     if (holdTimerRef.current) {
