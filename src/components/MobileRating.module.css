@@ -1,0 +1,109 @@
+.mobileRatingContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.mobileRatingTrigger {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 50px;
+  touch-action: none;
+  user-select: none;
+}
+
+.ratingPopup {
+  position: fixed;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  touch-action: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.popupStars {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #fbbf24;
+}
+
+.popupSlider {
+  width: 12rem;
+  padding: 0 12px;
+  touch-action: none;
+}
+
+.sliderTrack {
+  position: relative;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: visible;
+  width: 100%;
+}
+
+.sliderFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+.sliderThumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background: white;
+  border: 3px solid #667eea;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .mobileRatingTrigger {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    min-width: 45px;
+  }
+
+  .ratingPopup {
+    padding: 0.75rem;
+  }
+  .popupStars {
+    font-size: 1.75rem;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .popupSlider {
+    width: 9.75rem;
+    padding: 0 10px;
+  }
+  .sliderThumb {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobileRatingTrigger {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    min-width: 42px;
+  }
+}

@@ -3,39 +3,36 @@ import type { ParticipantsState, ParticipantData } from './types';
 import { participants } from './data/participants';
 import Header from './components/Header';
 import ParticipantRow from './components/ParticipantRow';
-import './App.css';
+import styles from './App.module.css';
 
-// Initialize default data for all participants
 const getInitialData = (): ParticipantsState => {
   const initial: ParticipantsState = {};
-  participants.forEach(participant => {
+  participants.forEach((participant) => {
     initial[participant.id] = {
       comment: '',
-      willContinue: true, // Default to rose
-      rating: 0, // Default to no rating
+      willContinue: true,
+      rating: 0,
     };
   });
   return initial;
 };
 
 function App() {
-  const [participantsData, setParticipantsData] = useLocalStorage<ParticipantsState>(
-    'kholostyak-poll-data',
-    getInitialData()
-  );
+  const [participantsData, setParticipantsData] =
+    useLocalStorage<ParticipantsState>('kholostyak-poll-data', getInitialData());
 
   const handleDataChange = (id: number, data: ParticipantData) => {
-    setParticipantsData(prev => ({
+    setParticipantsData((prev) => ({
       ...prev,
       [id]: data,
     }));
   };
 
   return (
-    <div className="app">
+    <div className={styles.app}>
       <Header />
-      <div className="table-container">
-        <table className="participants-table">
+      <div className={styles.tableContainer}>
+        <table className={styles.participantsTable}>
           <thead>
             <tr>
               <th>Учасниця</th>
@@ -45,11 +42,17 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {participants.map(participant => (
+            {participants.map((participant) => (
               <ParticipantRow
                 key={participant.id}
                 participant={participant}
-                data={participantsData[participant.id] || { comment: '', willContinue: true, rating: 0 }}
+                data={
+                  participantsData[participant.id] || {
+                    comment: '',
+                    willContinue: true,
+                    rating: 0,
+                  }
+                }
                 onDataChange={(data) => handleDataChange(participant.id, data)}
               />
             ))}

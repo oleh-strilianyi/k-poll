@@ -1,0 +1,232 @@
+.participantRow {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.participantRow:hover {
+  background-color: #f9fafb;
+}
+
+.participantRow td {
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+.participantInfo {
+  width: 176px;
+}
+
+.participantContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.imagePlaceholder {
+  width: 160px;
+  height: 160px;
+  background: #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.participantImage {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #667eea;
+  flex-shrink: 0;
+}
+
+.participantName {
+  font-weight: 500;
+  font-size: x-large;
+  color: #1f2937;
+  display: none;
+}
+
+.commentInput {
+  width: 100%;
+  height: 160px;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  background-color: #f9fafb;
+  transition: border-color 0.2s;
+  color: #1f2937;
+}
+
+.commentInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.commentTrigger {
+  width: 100%;
+  height: 50px;
+  padding: 0.3rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background-color: #f9fafb;
+  color: #1f2937;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.commentTrigger:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.predictionCell {
+  text-align: center;
+  padding: 0.5rem 0.25rem !important;
+  width: 100px;
+}
+
+.predictionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 2rem;
+  transition: transform 0.2s;
+  user-select: none;
+}
+
+.predictionButton:hover {
+  transform: scale(1.2);
+}
+
+.predictionEmoji {
+  display: inline-block;
+  line-height: 1;
+}
+
+.ratingCell {
+  text-align: center;
+  padding: 0.5rem 0.25rem !important;
+  width: 120px;
+}
+
+.ratingWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.desktopRating {
+  display: flex;
+}
+
+.mobileRating {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .participantName {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .participantInfo {
+    min-width: auto;
+    width: 50px;
+  }
+
+  .participantImage,
+  .imagePlaceholder {
+    width: 50px;
+    height: 50px;
+    border-width: 2px;
+  }
+
+  .participantContent {
+    gap: 0;
+    justify-content: center;
+  }
+
+  .commentInput {
+    font-size: 0.7rem;
+    height: 50px;
+    padding: 0.3rem;
+    min-width: 120px;
+  }
+
+  .predictionButton {
+    font-size: 1.5rem;
+    padding: 0.15rem;
+  }
+
+  .predictionCell {
+    width: 45px;
+    padding: 0.15rem !important;
+  }
+
+  .ratingCell {
+    width: 55px;
+    padding: 0.15rem !important;
+  }
+
+  .desktopRating {
+    display: none;
+  }
+
+  .mobileRating {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .participantRow td {
+    padding: 0.25rem 0.1rem;
+  }
+
+  .participantInfo {
+    width: 45px;
+  }
+
+  .participantImage,
+  .imagePlaceholder {
+    width: 45px;
+    height: 45px;
+  }
+
+  .commentTrigger {
+    height: 45px;
+    font-size: 0.8rem;
+    padding: 0.25rem;
+    min-width: 100px;
+  }
+
+  .predictionButton {
+    font-size: 1.3rem;
+    padding: 0.1rem;
+  }
+
+  .predictionCell {
+    width: 40px;
+    padding: 0.1rem !important;
+  }
+
+  .ratingCell {
+    width: 50px;
+    padding: 0.1rem !important;
+  }
+}
