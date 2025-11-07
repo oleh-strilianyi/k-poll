@@ -205,30 +205,31 @@
 }
 
 .rating-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* Більшість стилів тепер застосовується до .rating-popup-backdrop, 
+    але ці залишаються для самого попапу.
+  */
   background: white;
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  z-index: 1000; /* Має бути вище, ніж z-index бекдропу */
   min-width: 280px;
   pointer-events: auto;
   touch-action: none;
+  
+  /* Видалено:
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    Цим тепер займається flex-контейнер .rating-popup-backdrop
+  */
 }
 
-.rating-popup::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-}
+/* ВАЖЛИВО: Цей блок .rating-popup::before більше не потрібен, 
+  оскільки ми використовуємо .rating-popup-backdrop.
+  Я видалив його.
+*/
 
 .popup-stars {
   display: flex;
