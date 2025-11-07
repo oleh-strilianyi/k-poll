@@ -46,10 +46,10 @@ export default function MobileRating({
       const spaceBelow = viewportHeight - triggerRect.bottom;
       const spaceAbove = triggerRect.top;
 
-      if (spaceBelow > popupRect.height + 8) {
-        style.top = triggerRect.bottom + 8;
-      } else if (spaceAbove > popupRect.height + 8) {
+      if (spaceAbove > popupRect.height + 8) {
         style.top = triggerRect.top - popupRect.height - 8;
+      } else if (spaceBelow > popupRect.height + 8) {
+        style.top = triggerRect.bottom + 8;
       } else {
         style.top = Math.max(8, viewportHeight - popupRect.height - 8);
       }
@@ -113,11 +113,20 @@ export default function MobileRating({
     }
     if (isTap) {
       setIsTap(false);
-      showTooltip(
-        'Натисніть та проведіть',
-        touchStartPos.x,
-        touchStartPos.y
-      );
+
+      if (triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        
+        const badgeCenterX = rect.left + rect.width / 2;
+        
+        const badgeTopY = rect.top;
+
+        showTooltip(
+          'Натисніть та проведіть',
+          badgeCenterX - 60, 
+          badgeTopY            
+        );
+      }
     }
   };
 
