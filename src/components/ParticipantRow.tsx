@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Participant, ParticipantData } from '../types';
 import StarRating from './StarRating';
+import MobileRating from './MobileRating';
 
 interface ParticipantRowProps {
   participant: Participant;
@@ -25,7 +26,7 @@ export default function ParticipantRow({ participant, data, onDataChange }: Part
 
   return (
     <tr className="participant-row">
-      <td className="participant-info">
+      <td className="participant-info" data-label="Учасниця">
         <div className="participant-content">
           {!imageLoaded && <div className="image-placeholder">Завантаження...</div>}
           <img
@@ -38,7 +39,7 @@ export default function ParticipantRow({ participant, data, onDataChange }: Part
           <span className="participant-name">{participant.name}</span>
         </div>
       </td>
-      <td>
+      <td data-label="Коментар">
         <textarea
           className="comment-input"
           value={data.comment}
@@ -47,7 +48,7 @@ export default function ParticipantRow({ participant, data, onDataChange }: Part
           rows={2}
         />
       </td>
-      <td className="prediction-cell">
+      <td className="prediction-cell" data-label="Прогноз">
         <button
           className="prediction-button"
           onClick={toggleContinue}
@@ -58,8 +59,15 @@ export default function ParticipantRow({ participant, data, onDataChange }: Part
           </span>
         </button>
       </td>
-      <td className="rating-cell">
-        <StarRating rating={data.rating} onRatingChange={handleRatingChange} />
+      <td className="rating-cell" data-label="Рейтинг">
+        <div className="rating-wrapper">
+          <div className="desktop-rating">
+            <StarRating rating={data.rating} onRatingChange={handleRatingChange} />
+          </div>
+          <div className="mobile-rating">
+            <MobileRating rating={data.rating} onRatingChange={handleRatingChange} />
+          </div>
+        </div>
       </td>
     </tr>
   );
