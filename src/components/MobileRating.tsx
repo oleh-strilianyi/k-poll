@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FullStarIcon, HalfStarIcon, EmptyStarIcon } from './StarIcons';
+import { useTooltip } from '../contexts/TooltipContext';
 import styles from './MobileRating.module.css';
 
 interface MobileRatingProps {
@@ -14,10 +15,13 @@ export default function MobileRating({
   const [isOpen, setIsOpen] = useState(false);
   const [tempRating, setTempRating] = useState(rating);
   const [popupStyle, setPopupStyle] = useState<React.CSSProperties>({});
+  const [isTap, setIsTap] = useState(false);
+  const [touchStartPos, setTouchStartPos] = useState({ x: 0, y: 0 });
   const sliderRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const holdTimerRef = useRef<number | null>(null);
+  const { showTooltip } = useTooltip();
 
   useEffect(() => {
     if (!isOpen) {
@@ -64,38 +68,57 @@ export default function MobileRating({
     }
   }, [isOpen]);
 
-  const updateRatingFromTouch = useCallback((e: React.TouchEvent | TouchEvent) => {
-    if (!sliderRef.current) return;
-    const touch = e.touches[0];
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-    const newRating = Math.round(percentage * 10) / 2;
-    setTempRating(newRating);
-  }, []);
+  const updateRatingFromTouch = useCallback(
+    (e: React.TouchEvent | TouchEvent) => {
+      if (!sliderRef.current) return;
+      const touch = e.touches[0];
+      const rect = sliderRef.current.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(1, x / rect.width));
+      const newRating = Math.round(percentage * 10) / 2;
+      setTempRating(newRating);
+    },
+    []
+  );
 
   const handleTouchStart = (e: React.TouchEvent) => {
     e.preventDefault();
+    setIsTap(true);
+    setTouchStartPos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
     setTempRating(rating);
 
-    const cancelHold = () => {
-      if (holdTimerRef.current) {
-        clearTimeout(holdTimerRef.current);
-        holdTimerRef.current = null;
-      }
-      window.removeEventListener('touchmove', cancelHold);
-      window.removeEventListener('touchend', cancelHold);
-    };
-
-    window.addEventListener('touchmove', cancelHold);
-    window.addEventListener('touchend', cancelHold);
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+    }
 
     holdTimerRef.current = window.setTimeout(() => {
+      setIsTap(false);
       setIsOpen(true);
       holdTimerRef.current = null;
-      window.removeEventListener('touchmove', cancelHold);
-      window.removeEventListener('touchend', cancelHold);
     }, 300);
+  };
+
+  const handleTouchMove = () => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+    setIsTap(false);
+  };
+
+  const handleTouchEnd = () => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+    if (isTap) {
+      setIsTap(false);
+      showTooltip(
+        'Натисніть та проведіть',
+        touchStartPos.x,
+        touchStartPos.y
+      );
+    }
   };
 
   useEffect(() => {
@@ -150,6 +173,8 @@ export default function MobileRating({
         ref={triggerRef}
         className={styles.mobileRatingTrigger}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {rating.toFixed(1)}
       </button>

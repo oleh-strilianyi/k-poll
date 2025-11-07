@@ -35,10 +35,10 @@ function App() {
         <table className={styles.participantsTable}>
           <thead>
             <tr>
-              <th>Учасниця</th>
+              <th style={{ width: '176px' }}>Учасниця</th>
               <th>Коментар</th>
-              <th>Прогноз</th>
-              <th>Рейтинг</th>
+              <th style={{ width: '100px' }}>Прогноз</th>
+              <th style={{ width: '120px' }}>Рейтинг</th>
             </tr>
           </thead>
           <tbody>

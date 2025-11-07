@@ -63,6 +63,7 @@
   background-color: #f9fafb;
   transition: border-color 0.2s;
   color: #1f2937;
+  overflow-wrap: break-word;
 }
 
 .commentInput:focus {
@@ -83,9 +84,10 @@
   color: #1f2937;
   text-align: left;
   cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-y: auto;
+  overflow-x: hidden;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .commentTrigger:focus {
@@ -147,13 +149,13 @@
 @media (max-width: 768px) {
   .participantInfo {
     min-width: auto;
-    width: 50px;
+    width: 60px;
   }
 
   .participantImage,
   .imagePlaceholder {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-width: 2px;
   }
 
@@ -164,9 +166,13 @@
 
   .commentInput {
     font-size: 0.7rem;
-    height: 50px;
+    height: 60px;
     padding: 0.3rem;
     min-width: 120px;
+  }
+
+  .commentTrigger {
+    height: 60px;
   }
 
   .predictionButton {
@@ -199,17 +205,17 @@
   }
 
   .participantInfo {
-    width: 45px;
+    width: 60px;
   }
 
   .participantImage,
   .imagePlaceholder {
-    width: 45px;
-    height: 45px;
+    width: 60px;
+    height: 60px;
   }
 
   .commentTrigger {
-    height: 45px;
+    height: 60px;
     font-size: 0.8rem;
     padding: 0.25rem;
     min-width: 100px;

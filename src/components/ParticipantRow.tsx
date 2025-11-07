@@ -59,12 +59,14 @@ export default function ParticipantRow({
         </td>
         <td data-label="Коментар">
           {isMobile ? (
-            <button
+            <div
               className={styles.commentTrigger}
               onClick={() => setIsCommentModalOpen(true)}
+              role="button"
+              tabIndex={0}
             >
               {data.comment || 'Додати коментар...'}
-            </button>
+            </div>
           ) : (
             <textarea
               className={styles.commentInput}
@@ -96,10 +98,7 @@ export default function ParticipantRow({
                 onRatingChange={handleRatingChange}
               />
             </div>
-            <div
-              className={styles.mobileRating}
-              data-tooltip="Натисніть та проведіть"
-            >
+            <div className={styles.mobileRating}>
               <MobileRating
                 rating={data.rating}
                 onRatingChange={handleRatingChange}
