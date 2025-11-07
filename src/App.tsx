@@ -7,7 +7,7 @@ import ParticipantRow from './components/ParticipantRow';
 import ClearDataModal from './components/ClearDataModal';
 import styles from './App.module.css';
 
-const CURRENT_WEEK_ID = 2;
+const CURRENT_WEEK_ID = 3;
 const WEEK_ID_KEY = 'kholostyak-poll-week-id';
 const DATA_KEY = 'kholostyak-poll-data';
 
