@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import type { ParticipantsState, ParticipantData } from './types';
+import type { ParticipantsState, ParticipantData, Participant } from './types';
 import { participants } from './data/participants';
 import Header from './components/Header';
 import ParticipantRow from './components/ParticipantRow';
 import ClearDataModal from './components/ClearDataModal';
+import ParticipantDetails from './components/ParticipantDetails';
 import styles from './App.module.css';
 
 const CURRENT_WEEK_ID = 3;
@@ -28,6 +29,10 @@ function App() {
     useLocalStorage<ParticipantsState>(DATA_KEY, getInitialData());
 
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+
+  const [selectedParticipant, setSelectedParticipant] =
+    useState<Participant | null>(null);
+  const [avatarRect, setAvatarRect] = useState<DOMRect | null>(null);
 
   useEffect(() => {
     const checkWeek = () => {
@@ -79,6 +84,18 @@ function App() {
     }));
   };
 
+  const handleAvatarClick = (participant: Participant, rect: DOMRect) => {
+    setSelectedParticipant(participant);
+    setAvatarRect(rect);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedParticipant(null);
+    setAvatarRect(null);
+    document.body.style.overflow = 'auto';
+  };
+
   return (
     <div className={styles.app}>
       <Header />
@@ -105,6 +122,7 @@ function App() {
                   }
                 }
                 onDataChange={(data) => handleDataChange(participant.id, data)}
+                onAvatarClick={handleAvatarClick}
               />
             ))}
           </tbody>
@@ -116,6 +134,14 @@ function App() {
         onClear={handleClearData}
         onKeep={handleKeepData}
       />
+
+      {selectedParticipant && avatarRect && (
+        <ParticipantDetails
+          participant={selectedParticipant}
+          originRect={avatarRect}
+          onClose={handleCloseDetails}
+        />
+      )}
     </div>
   );
 }

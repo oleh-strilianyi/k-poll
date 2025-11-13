@@ -1,10 +1,15 @@
+export interface ParticipantPhoto {
+  publicId: string;
+  version: string;
+}
+
 export interface Participant {
   id: number;
   name: string;
-  image: {
-    publicId: string; 
-    version: string;  
-  };
+  age: number;
+  description: string;
+  instagramNickname: string; 
+  photos: ParticipantPhoto[];
 }
 
 export interface ParticipantData {

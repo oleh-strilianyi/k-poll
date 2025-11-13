@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import type { Participant, ParticipantData } from '../types';
 import StarRating from './StarRating';
 import MobileRating from './MobileRating';
@@ -10,21 +10,24 @@ interface ParticipantRowProps {
   participant: Participant;
   data: ParticipantData;
   onDataChange: (data: ParticipantData) => void;
+  onAvatarClick: (participant: Participant, rect: DOMRect) => void;
 }
 
 export default function ParticipantRow({
   participant,
   data,
   onDataChange,
+  onAvatarClick,
 }: ParticipantRowProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const isMobile = useIsMobile();
+  const avatarRef = useRef<HTMLImageElement>(null);
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
 
-  const { publicId, version } = participant.image;
+  const { publicId, version } = participant.photos[0];
 
   const desktopTransforms = 'w_160,h_160,c_thumb,g_face,f_auto,q_85';
   const mobileTransforms = 'w_60,h_60,c_thumb,g_face,f_auto,q_90';
@@ -50,6 +53,13 @@ export default function ParticipantRow({
     onDataChange({ ...data, rating });
   };
 
+  const handleAvatarClick = () => {
+    if (avatarRef.current) {
+      const rect = avatarRef.current.getBoundingClientRect();
+      onAvatarClick(participant, rect);
+    }
+  };
+
   return (
     <>
       <tr className={styles.participantRow}>
@@ -59,11 +69,16 @@ export default function ParticipantRow({
               <div className={styles.imagePlaceholder}>...</div>
             )}
             <img
+              ref={avatarRef}
               src={dynamicImageUrl}
               alt={participant.name}
               className={styles.participantImage}
               onLoad={() => setImageLoaded(true)}
-              style={{ display: imageLoaded ? 'block' : 'none' }}
+              style={{
+                display: imageLoaded ? 'block' : 'none',
+                cursor: 'pointer',
+              }}
+              onClick={handleAvatarClick}
             />
             <span className={styles.participantName}>{participant.name}</span>
           </div>
