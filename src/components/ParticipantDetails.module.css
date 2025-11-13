@@ -51,13 +51,19 @@
   height: 100%;
 }
 
+.imageTrack {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
 .participantImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.3s ease-in;
   cursor: grab;
+  flex-shrink: 0;
+  user-select: none;
 }
 .participantImage:active {
   cursor: grabbing;

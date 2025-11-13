@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Participant } from '../types';
 import styles from './ParticipantDetails.module.css';
-import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
+import { motion, type PanInfo } from 'framer-motion';
 
 interface ParticipantDetailsProps {
   participant: Participant;
@@ -9,67 +9,55 @@ interface ParticipantDetailsProps {
 }
 
 const ANIMATION_DURATION = 0.3;
-const SWIPE_THRESHOLD = 10000;
-
-const imageVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    zIndex: 0,
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-};
 
 export default function ParticipantDetails({
   participant,
   onClose,
 }: ParticipantDetailsProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [swipeDirection, setSwipeDirection] = useState(0);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
+
+  useEffect(() => {
+    if (!participant.photos || !CLOUD_NAME || !BASE_URL) return;
+
+    participant.photos.forEach((photo) => {
+      const { version, publicId } = photo;
+      const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${version}/${publicId}`;
+      const img = new Image();
+      img.src = imageUrl;
+    });
+  }, [participant, CLOUD_NAME, BASE_URL]);
 
   const { photos } = participant;
   const isFirstPhoto = currentPhotoIndex === 0;
   const isLastPhoto = currentPhotoIndex === photos.length - 1;
 
   const paginate = (newDirection: number) => {
-    if (newDirection > 0 && !isLastPhoto) {
-      setSwipeDirection(1);
-      setCurrentPhotoIndex(currentPhotoIndex + 1);
-      setIsImageLoaded(false);
-    } else if (newDirection < 0 && !isFirstPhoto) {
-      setSwipeDirection(-1);
-      setCurrentPhotoIndex(currentPhotoIndex - 1);
-      setIsImageLoaded(false);
+    let newIndex = currentPhotoIndex + newDirection;
+    if (newIndex < 0) {
+      newIndex = 0;
+    } else if (newIndex >= photos.length) {
+      newIndex = photos.length - 1;
     }
+    setCurrentPhotoIndex(newIndex);
   };
 
   const handleDragEnd = (
     _e: MouseEvent | TouchEvent,
     { offset, velocity }: PanInfo
   ) => {
-    const swipePower = Math.abs(offset.x) * velocity.x;
+    const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
+    const swipeThreshold = containerWidth / 4;
 
-    if (swipePower < -SWIPE_THRESHOLD) {
+    if (offset.x < -swipeThreshold || velocity.x < -500) {
       paginate(1);
-    } else if (swipePower > SWIPE_THRESHOLD) {
+    } else if (offset.x > swipeThreshold || velocity.x > 500) {
       paginate(-1);
     }
   };
-
-  const currentPhoto = photos[currentPhotoIndex];
-  const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${currentPhoto.version}/${currentPhoto.publicId}`;
 
   return (
     <>
@@ -105,6 +93,7 @@ export default function ParticipantDetails({
 
         <motion.div
           className={styles.imageContainer}
+          ref={containerRef}
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
@@ -121,53 +110,55 @@ export default function ParticipantDetails({
             },
           }}
         >
-          <AnimatePresence initial={false} custom={swipeDirection}>
-            <motion.img
-              key={currentPhotoIndex}
-              src={imageUrl}
-              alt={`${participant.name} ${currentPhotoIndex + 1}`}
-              className={styles.participantImage}
-              custom={swipeDirection}
-              variants={imageVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-              }}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.1}
-              onDragEnd={handleDragEnd}
-              onLoad={() => setIsImageLoaded(true)}
-              style={{ opacity: isImageLoaded ? 1 : 0 }}
-            />
-          </AnimatePresence>
-
-          {photos.length > 1 && (
-            <>
-              {!isFirstPhoto && (
-                <button
-                  onClick={() => paginate(-1)}
-                  className={`${styles.navButton} ${styles.prev}`}
-                  aria-label="Попереднє фото"
-                >
-                  ‹
-                </button>
-              )}
-              {!isLastPhoto && (
-                <button
-                  onClick={() => paginate(1)}
-                  className={`${styles.navButton} ${styles.next}`}
-                  aria-label="Наступне фото"
-                >
-                  ›
-                </button>
-              )}
-            </>
-          )}
+          <motion.div
+            className={styles.imageTrack}
+            drag="x"
+            onDragEnd={handleDragEnd}
+            animate={{ x: `-${currentPhotoIndex * 100}%` }}
+            transition={{
+              type: 'spring',
+              stiffness: 300,
+              damping: 30,
+            }}
+            dragElastic={0.1}
+          >
+            {photos.map((photo, index) => {
+              const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${photo.version}/${photo.publicId}`;
+              return (
+                <motion.img
+                  key={index}
+                  src={imageUrl}
+                  alt={`${participant.name} ${index + 1}`}
+                  className={styles.participantImage}
+                  draggable="false"
+                />
+              );
+            })}
+          </motion.div>
         </motion.div>
+
+        {photos.length > 1 && (
+          <>
+            {!isFirstPhoto && (
+              <button
+                onClick={() => paginate(-1)}
+                className={`${styles.navButton} ${styles.prev}`}
+                aria-label="Попереднє фото"
+              >
+                ‹
+              </button>
+            )}
+            {!isLastPhoto && (
+              <button
+                onClick={() => paginate(1)}
+                className={`${styles.navButton} ${styles.next}`}
+                aria-label="Наступне фото"
+              >
+                ›
+              </button>
+            )}
+          </>
+        )}
 
         <motion.div
           className={styles.content}
