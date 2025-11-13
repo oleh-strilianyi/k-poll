@@ -9,7 +9,7 @@ import ParticipantDetails from './components/ParticipantDetails';
 import styles from './App.module.css';
 import { AnimatePresence } from 'framer-motion';
 
-const CURRENT_WEEK_ID = 3;
+const CURRENT_WEEK_ID = 4;
 const WEEK_ID_KEY = 'kholostyak-poll-week-id';
 const DATA_KEY = 'kholostyak-poll-data';
 
