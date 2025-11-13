@@ -7,6 +7,7 @@ import ParticipantRow from './components/ParticipantRow';
 import ClearDataModal from './components/ClearDataModal';
 import ParticipantDetails from './components/ParticipantDetails';
 import styles from './App.module.css';
+import { AnimatePresence } from 'framer-motion';
 
 const CURRENT_WEEK_ID = 3;
 const WEEK_ID_KEY = 'kholostyak-poll-week-id';
@@ -32,7 +33,6 @@ function App() {
 
   const [selectedParticipant, setSelectedParticipant] =
     useState<Participant | null>(null);
-  const [avatarRect, setAvatarRect] = useState<DOMRect | null>(null);
 
   useEffect(() => {
     const checkWeek = () => {
@@ -84,15 +84,13 @@ function App() {
     }));
   };
 
-  const handleAvatarClick = (participant: Participant, rect: DOMRect) => {
+  const handleAvatarClick = (participant: Participant) => {
     setSelectedParticipant(participant);
-    setAvatarRect(rect);
     document.body.style.overflow = 'hidden';
   };
 
   const handleCloseDetails = () => {
     setSelectedParticipant(null);
-    setAvatarRect(null);
     document.body.style.overflow = 'auto';
   };
 
@@ -135,13 +133,14 @@ function App() {
         onKeep={handleKeepData}
       />
 
-      {selectedParticipant && avatarRect && (
-        <ParticipantDetails
-          participant={selectedParticipant}
-          originRect={avatarRect}
-          onClose={handleCloseDetails}
-        />
-      )}
+      <AnimatePresence>
+        {selectedParticipant && (
+          <ParticipantDetails
+            participant={selectedParticipant}
+            onClose={handleCloseDetails}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

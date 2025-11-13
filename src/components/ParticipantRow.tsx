@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import type { Participant, ParticipantData } from '../types';
 import StarRating from './StarRating';
 import MobileRating from './MobileRating';
@@ -10,7 +10,7 @@ interface ParticipantRowProps {
   participant: Participant;
   data: ParticipantData;
   onDataChange: (data: ParticipantData) => void;
-  onAvatarClick: (participant: Participant, rect: DOMRect) => void;
+  onAvatarClick: (participant: Participant) => void;
 }
 
 export default function ParticipantRow({
@@ -22,7 +22,6 @@ export default function ParticipantRow({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const isMobile = useIsMobile();
-  const avatarRef = useRef<HTMLImageElement>(null);
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
@@ -54,10 +53,7 @@ export default function ParticipantRow({
   };
 
   const handleAvatarClick = () => {
-    if (avatarRef.current) {
-      const rect = avatarRef.current.getBoundingClientRect();
-      onAvatarClick(participant, rect);
-    }
+    onAvatarClick(participant);
   };
 
   return (
@@ -69,7 +65,6 @@ export default function ParticipantRow({
               <div className={styles.imagePlaceholder}>...</div>
             )}
             <img
-              ref={avatarRef}
               src={dynamicImageUrl}
               alt={participant.name}
               className={styles.participantImage}

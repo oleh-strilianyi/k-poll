@@ -3,7 +3,6 @@
   inset: 0;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 1000;
-  transition: opacity 0.25s cubic-bezier(0.65, 0, 0.35, 1);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
@@ -13,6 +12,9 @@
   inset: 0;
   z-index: 1001;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .closeButton {
@@ -31,7 +33,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  padding: 0;
   transition:
     opacity 0.2s ease 0.1s,
     transform 0.2s ease;
@@ -42,7 +44,7 @@
 
 .imageContainer {
   position: absolute;
-  transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: none;
   overflow: hidden;
   background: #333;
   width: 100%;
@@ -55,6 +57,10 @@
   object-fit: cover;
   opacity: 0;
   transition: opacity 0.3s ease-in;
+  cursor: grab;
+}
+.participantImage:active {
+  cursor: grabbing;
 }
 
 .navButton {
@@ -74,7 +80,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  padding: 0;
 }
 .navButton:hover {
   background: rgba(0, 0, 0, 0.6);
@@ -88,12 +94,15 @@
 
 .dots {
   position: absolute;
-  bottom: 0.5rem;
+  top: max(1rem, env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 0.5rem;
-  z-index: 10;
+  z-index: 1003;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
 }
 .dot,
 .dotActive {
@@ -113,16 +122,12 @@
   right: 0.5rem;
   bottom: max(0.5rem, env(safe-area-inset-bottom));
   background: white;
-  border-radius: 16px; 
-  padding: 0.3rem 1rem 1rem 1rem; 
+  border-radius: 16px;
+  padding: 0.3rem 1rem 1rem 1rem;
   overflow-y: auto;
   color: #1f2937;
-  height: auto; 
-  max-height: 40vh; 
-  transform: translateY(calc(100% + 1rem)); 
-  transition:
-    opacity 0.2s ease 0.1s,
-    transform 0.25s cubic-bezier(0.65, 0, 0.35, 1) 0.05s;
+  height: auto;
+  max-height: 40vh;
 }
 
 .content h2 {
@@ -149,5 +154,5 @@
   line-height: 1.4;
   text-align: justify;
   color: #4b5563;
-  margin: 0; 
+  margin: 0;
 }

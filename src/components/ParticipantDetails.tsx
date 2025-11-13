@@ -1,205 +1,192 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Participant } from '../types';
 import styles from './ParticipantDetails.module.css';
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 
 interface ParticipantDetailsProps {
   participant: Participant;
-  originRect: DOMRect;
   onClose: () => void;
 }
 
-const ANIMATION_DURATION = 250;
-const SWIPE_THRESHOLD = 50;
+const ANIMATION_DURATION = 0.3;
+const SWIPE_THRESHOLD = 10000;
+
+const imageVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+};
 
 export default function ParticipantDetails({
   participant,
-  originRect,
   onClose,
 }: ParticipantDetailsProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [animationState, setAnimationState] = useState<
-    'opening' | 'open' | 'closing'
-  >('opening');
+  const [swipeDirection, setSwipeDirection] = useState(0);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const [touchCurrentX, setTouchCurrentX] = useState<number | null>(null);
-
-  const [imageStyle, setImageStyle] = useState<React.CSSProperties>({
-    top: `${originRect.top}px`,
-    left: `${originRect.left}px`,
-    width: `${originRect.width}px`,
-    height: `${originRect.height}px`,
-    borderRadius: '50%',
-  });
-  const [backdropOpacity, setBackdropOpacity] = useState(0);
-  const [contentTransform, setContentTransform] = useState('translateY(100%)'); 
-  const [contentOpacity, setContentOpacity] = useState(0);
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      setImageStyle({
-        top: '0px',
-        left: '0px',
-        width: '100%',
-        height: '100%', 
-        borderRadius: '0px',
-      });
-      setBackdropOpacity(1);
-    });
-
-    const contentTimer = setTimeout(() => {
-      setContentOpacity(1);
-      setContentTransform('translateY(0)'); 
-    }, 100);
-
-    const openTimer = setTimeout(() => {
-      setAnimationState('open');
-    }, ANIMATION_DURATION);
-
-    return () => {
-      clearTimeout(contentTimer);
-      clearTimeout(openTimer);
-    };
-  }, []);
-
-  const handleClose = () => {
-    if (animationState === 'closing') return;
-
-    setAnimationState('closing');
-    setContentOpacity(0);
-    setContentTransform('translateY(100%)'); 
-
-    setTimeout(() => {
-      setImageStyle({
-        top: `${originRect.top}px`,
-        left: `${originRect.left}px`,
-        width: `${originRect.width}px`,
-        height: `${originRect.height}px`,
-        borderRadius: '50%',
-      });
-      setBackdropOpacity(0);
-    }, 50);
-
-    setTimeout(onClose, ANIMATION_DURATION + 100);
-  };
-
   const { photos } = participant;
+  const isFirstPhoto = currentPhotoIndex === 0;
+  const isLastPhoto = currentPhotoIndex === photos.length - 1;
 
-  const nextPhoto = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setIsImageLoaded(false);
-    setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
+  const paginate = (newDirection: number) => {
+    if (newDirection > 0 && !isLastPhoto) {
+      setSwipeDirection(1);
+      setCurrentPhotoIndex(currentPhotoIndex + 1);
+      setIsImageLoaded(false);
+    } else if (newDirection < 0 && !isFirstPhoto) {
+      setSwipeDirection(-1);
+      setCurrentPhotoIndex(currentPhotoIndex - 1);
+      setIsImageLoaded(false);
+    }
   };
 
-  const prevPhoto = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setIsImageLoaded(false);
-    setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
+  const handleDragEnd = (
+    _e: MouseEvent | TouchEvent,
+    { offset, velocity }: PanInfo
+  ) => {
+    const swipePower = Math.abs(offset.x) * velocity.x;
+
+    if (swipePower < -SWIPE_THRESHOLD) {
+      paginate(1);
+    } else if (swipePower > SWIPE_THRESHOLD) {
+      paginate(-1);
+    }
   };
 
   const currentPhoto = photos[currentPhotoIndex];
   const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${currentPhoto.version}/${currentPhoto.publicId}`;
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    e.stopPropagation(); 
-    setTouchStartX(e.touches[0].clientX);
-    setTouchCurrentX(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    e.stopPropagation();
-    if (touchStartX === null) return;
-    setTouchCurrentX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX === null || touchCurrentX === null) return;
-
-    const diff = touchStartX - touchCurrentX;
-
-    if (diff > SWIPE_THRESHOLD) {
-      nextPhoto();
-    } else if (diff < -SWIPE_THRESHOLD) {
-      prevPhoto();
-    }
-
-    setTouchStartX(null);
-    setTouchCurrentX(null);
-  };
-
   return (
     <>
-      <div
+      <motion.div
         className={styles.backdrop}
-        style={{ opacity: backdropOpacity }}
-        onClick={handleClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: ANIMATION_DURATION }}
+        onClick={onClose}
       />
       <div className={styles.detailsView}>
-        <div
-          className={styles.imageContainer}
-          style={imageStyle}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          <img
-            src={imageUrl}
-            alt={`${participant.name} ${currentPhotoIndex + 1}`}
-            className={styles.participantImage}
-            onLoad={() => setIsImageLoaded(true)}
-            style={{ opacity: isImageLoaded ? 1 : 0 }}
-          />
-
-          {photos.length > 1 && (
-            <>
-              <button
-                onClick={prevPhoto}
-                className={`${styles.navButton} ${styles.prev}`}
-                aria-label="Попереднє фото"
-              >
-                ‹
-              </button>
-              <button
-                onClick={nextPhoto}
-                className={`${styles.navButton} ${styles.next}`}
-                aria-label="Наступне фото"
-              >
-                ›
-              </button>
-              <div className={styles.dots}>
-                {photos.map((_, index) => (
-                  <span
-                    key={index}
-                    className={
-                      index === currentPhotoIndex
-                        ? styles.dotActive
-                        : styles.dot
-                    }
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-
         <button
           className={styles.closeButton}
-          onClick={handleClose}
-          style={{ opacity: contentOpacity }}
+          onClick={onClose}
           aria-label="Закрити"
         >
           &times;
         </button>
 
-        <div
+        {photos.length > 1 && (
+          <div className={styles.dots}>
+            {photos.map((_, index) => (
+              <span
+                key={index}
+                className={
+                  index === currentPhotoIndex ? styles.dotActive : styles.dot
+                }
+              />
+            ))}
+          </div>
+        )}
+
+        <motion.div
+          className={styles.imageContainer}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: 1,
+            transition: {
+              duration: ANIMATION_DURATION,
+              ease: [0.65, 0, 0.35, 1],
+            },
+          }}
+          exit={{
+            opacity: 0,
+            transition: {
+              duration: ANIMATION_DURATION,
+              ease: [0.65, 0, 0.35, 1],
+            },
+          }}
+        >
+          <AnimatePresence initial={false} custom={swipeDirection}>
+            <motion.img
+              key={currentPhotoIndex}
+              src={imageUrl}
+              alt={`${participant.name} ${currentPhotoIndex + 1}`}
+              className={styles.participantImage}
+              custom={swipeDirection}
+              variants={imageVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: 'spring', stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.1}
+              onDragEnd={handleDragEnd}
+              onLoad={() => setIsImageLoaded(true)}
+              style={{ opacity: isImageLoaded ? 1 : 0 }}
+            />
+          </AnimatePresence>
+
+          {photos.length > 1 && (
+            <>
+              {!isFirstPhoto && (
+                <button
+                  onClick={() => paginate(-1)}
+                  className={`${styles.navButton} ${styles.prev}`}
+                  aria-label="Попереднє фото"
+                >
+                  ‹
+                </button>
+              )}
+              {!isLastPhoto && (
+                <button
+                  onClick={() => paginate(1)}
+                  className={`${styles.navButton} ${styles.next}`}
+                  aria-label="Наступне фото"
+                >
+                  ›
+                </button>
+              )}
+            </>
+          )}
+        </motion.div>
+
+        <motion.div
           className={styles.content}
-          style={{
-            opacity: contentOpacity,
-            transform: contentTransform,
+          initial={{ opacity: 0, transform: 'translateY(100%)' }}
+          animate={{
+            opacity: 1,
+            transform: 'translateY(0)',
+            transition: {
+              duration: ANIMATION_DURATION,
+              ease: [0.65, 0, 0.35, 1],
+            },
+          }}
+          exit={{
+            opacity: 0,
+            transform: 'translateY(100%)',
+            transition: {
+              duration: ANIMATION_DURATION,
+              ease: [0.65, 0, 0.35, 1],
+            },
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -215,7 +202,7 @@ export default function ParticipantDetails({
             @{participant.instagramNickname}
           </a>
           <p className={styles.description}>{participant.description}</p>
-        </div>
+        </motion.div>
       </div>
     </>
   );
