@@ -21,6 +21,17 @@ export default function ParticipantRow({
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const isMobile = useIsMobile();
 
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
+
+  const { publicId, version } = participant.image;
+
+  const desktopTransforms = 'w_160,h_160,c_thumb,g_face,f_auto,q_85';
+  const mobileTransforms = 'w_60,h_60,c_thumb,g_face,f_auto,q_90';
+  const transforms = isMobile ? mobileTransforms : desktopTransforms;
+
+  const dynamicImageUrl = `${BASE_URL}${transforms}/${version}/${publicId}`;
+
   const toggleContinue = () => {
     onDataChange({ ...data, willContinue: !data.willContinue });
   };
@@ -48,7 +59,7 @@ export default function ParticipantRow({
               <div className={styles.imagePlaceholder}>...</div>
             )}
             <img
-              src={participant.imageUrl}
+              src={dynamicImageUrl}
               alt={participant.name}
               className={styles.participantImage}
               onLoad={() => setImageLoaded(true)}

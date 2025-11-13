@@ -1,13 +1,16 @@
 export interface Participant {
   id: number;
   name: string;
-  imageUrl: string;
+  image: {
+    publicId: string; 
+    version: string;  
+  };
 }
 
 export interface ParticipantData {
   comment: string;
-  willContinue: boolean; // true = rose, false = broken heart
-  rating: number; // 0-5
+  willContinue: boolean;
+  rating: number;
 }
 
 export type ParticipantsState = Record<number, ParticipantData>;

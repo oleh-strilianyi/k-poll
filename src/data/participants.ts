@@ -1,20 +1,92 @@
 import type { Participant } from '../types';
 
 export const participants: Participant[] = [
-  { id: 1, name: 'Яна учілка', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030486/1_fn3k1j.jpg` },
-  // { id: 2, name: 'Софія турнікет', imageUrl: `${BASE_URL}images/2.jpg` },
-  { id: 3, name: 'Настя новая', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030486/3_i9qqml.jpg` },
-  // { id: 4, name: 'Віка вставна челюсть', imageUrl: `${BASE_URL}images/4.jpg` },
-  { id: 5, name: 'Надін у апарата', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030486/5_qq52y1.jpg` },
-  { id: 6, name: 'Оксана косметолог', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030484/6_qjiiym.jpg` },
-  // { id: 7, name: 'Юля письмо пізніше', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030484/7_uce8yc.jpg` },
-  // { id: 8, name: 'Надя табуретка', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030484/8_r461vi.jpg` },
-  { id: 9, name: 'Даша весільне агенство', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030484/9_cg33ll.jpg` },
-  { id: 10, name: 'Валерія наєздніца', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030484/10_zrcem1.jpg` },
-  // { id: 11, name: 'Ніколетта тату', imageUrl: `${BASE_URL}images/11.jpg` },
-  { id: 12, name: 'Іра купальники', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030484/12_mmayyu.jpg` },
-  { id: 13, name: 'Ольга фітнес тренер', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030485/13_yoonn7.jpg` },
-  { id: 14, name: 'Юля фешн фотограф', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030485/14_qfuw3j.jpg` },
-  { id: 15, name: 'Іра шапка з аврори', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030485/15_ofhelu.jpg` },
-  { id: 16, name: 'Діана Зотова', imageUrl: `https://res.cloudinary.com/dn9a686um/image/upload/v1763030485/16_gsgq2m.jpg` },
+  {
+    id: 1,
+    name: 'Яна Андрієнко',
+    image: {
+      publicId: '1_cqbgje.png',
+      version: 'v1763039707',
+    },
+  },
+  {
+    id: 3,
+    name: 'Анастасія Половинкіна',
+    image: {
+      publicId: '3_t9a29m.png',
+      version: 'v1763039712',
+    },
+  },
+  {
+    id: 5,
+    name: 'Надін Головчук',
+    image: {
+      publicId: '5_fkd51y.png',
+      version: 'v1763039707',
+    },
+  },
+  {
+    id: 6,
+    name: 'Оксана Шанюк',
+    image: {
+      publicId: '6_f8egox.png',
+      version: 'v1763039710',
+    },
+  },
+  {
+    id: 9,
+    name: 'Дарʼя Романець',
+    image: {
+      publicId: '9_rglqpi.png',
+      version: 'v1763039710',
+    },
+  },
+  {
+    id: 10,
+    name: 'Валерія Жуковська',
+    image: {
+      publicId: '10_gvlvxb.png',
+      version: 'v1763039703',
+    },
+  },
+  {
+    id: 12,
+    name: 'Ірина Кулешина',
+    image: {
+      publicId: '12_doizvj.png',
+      version: 'v1763039704',
+    },
+  },
+  {
+    id: 13,
+    name: 'Ольга Дзундза',
+    image: {
+      publicId: '13_dgv2r5.png',
+      version: 'v1763039705',
+    },
+  },
+  {
+    id: 14,
+    name: 'Юлія Коренюк',
+    image: {
+      publicId: '14_xq6tqo.png',
+      version: 'v1763039714',
+    },
+  },
+  {
+    id: 15,
+    name: 'Ірина Пономаренко',
+    image: {
+      publicId: '15_a976zy.png',
+      version: 'v1763039712',
+    },
+  },
+  {
+    id: 16,
+    name: 'Діана Зотова',
+    image: {
+      publicId: '16_mzzhdn.png',
+      version: 'v1763039715',
+    },
+  },
 ];
