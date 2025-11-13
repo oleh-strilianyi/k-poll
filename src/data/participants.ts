@@ -4,14 +4,15 @@ export const participants: Participant[] = [
   {
     id: 1,
     name: 'Яна Андрієнко',
-    age: 24,
+    age: 29,
     description:
-      'Любить подорожувати та читати класичну літературу. Мріє відкрити власну кав\'ярню у Львові. Її життєве кредо - "Ніколи не здавайся".',
-    instagramNickname: 'example.yana', 
+      'Вчителька. Прийшла на проєкт, щоб познайомитись із Тарасом і довести, що вчителі теж можуть жити яскраво та емоційно.',
+    instagramNickname: 'yanaaandrienko', 
     photos: [
       { publicId: '1_cqbgje.png', version: 'v1763039707' },
-      { publicId: 'sample_photo_1.jpg', version: 'v1' },
-      { publicId: 'sample_photo_2.jpg', version: 'v1' },
+      { publicId: 'yana1_usghid.jpg', version: 'v1763048295' },
+      { publicId: 'yana2_fvd0r1.jpg', version: 'v1763048551' },
+      { publicId: 'yana3_n1jsxr.jpg', version: 'v1763049028' },
     ],
   },
   {
