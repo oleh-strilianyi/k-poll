@@ -15,12 +15,22 @@ export default function ParticipantDetails({
   onClose,
 }: ParticipantDetailsProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
 
   useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.clientWidth);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+
     if (!participant.photos || !CLOUD_NAME || !BASE_URL) return;
 
     participant.photos.forEach((photo) => {
@@ -29,6 +39,10 @@ export default function ParticipantDetails({
       const img = new Image();
       img.src = imageUrl;
     });
+
+    return () => {
+      window.removeEventListener('resize', updateWidth);
+    };
   }, [participant, CLOUD_NAME, BASE_URL]);
 
   const { photos } = participant;
@@ -49,7 +63,6 @@ export default function ParticipantDetails({
     _e: MouseEvent | TouchEvent,
     { offset, velocity }: PanInfo
   ) => {
-    const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
     const swipeThreshold = containerWidth / 4;
 
     if (offset.x < -swipeThreshold || velocity.x < -500) {
@@ -116,11 +129,15 @@ export default function ParticipantDetails({
             onDragEnd={handleDragEnd}
             animate={{ x: `-${currentPhotoIndex * 100}%` }}
             transition={{
-              type: 'spring',
-              stiffness: 300,
-              damping: 30,
+              type: 'tween',
+              duration: 0.4,
+              ease: [0.4, 0, 0.2, 1],
             }}
             dragElastic={0.1}
+            dragConstraints={{
+              right: 0,
+              left: -containerWidth * (photos.length - 1),
+            }}
           >
             {photos.map((photo, index) => {
               const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${photo.version}/${photo.publicId}`;
