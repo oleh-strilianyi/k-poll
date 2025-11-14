@@ -110,7 +110,7 @@ export default function ParticipantDetails({
     _e: MouseEvent | TouchEvent,
     { offset, velocity }: PanInfo
   ) => {
-    const swipeThreshold = containerWidth / 6;
+    const swipeThreshold = containerWidth / 8;
     const velocityThreshold = 400;
 
     if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
