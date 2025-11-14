@@ -17,8 +17,10 @@ export default function ParticipantDetails({
 }: ParticipantDetailsProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
+  const isLoadingRef = useRef(false);
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
@@ -33,31 +35,51 @@ export default function ParticipantDetails({
     updateWidth();
     window.addEventListener('resize', updateWidth);
 
-    if (!participant.photos || !CLOUD_NAME || !BASE_URL) {
-      return () => {
-        window.removeEventListener('resize', updateWidth);
-      };
-    }
-
-    const preloadImagesSequentially = async () => {
-      for (const photo of participant.photos) {
-        await new Promise((resolve) => {
-          const { version, publicId } = photo;
-          const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${version}/${publicId}`;
-          const img = new Image();
-          img.src = imageUrl;
-          img.onload = resolve;
-          img.onerror = resolve;
-        });
-      }
-    };
-
-    preloadImagesSequentially();
-
     return () => {
       window.removeEventListener('resize', updateWidth);
     };
-  }, [participant, CLOUD_NAME, BASE_URL]);
+  }, []);
+
+  useEffect(() => {
+    if (!participant.photos || !CLOUD_NAME || !BASE_URL || isLoadingRef.current) {
+      return;
+    }
+
+    const loadNextImage = async () => {
+      isLoadingRef.current = true;
+
+      for (let i = 0; i < participant.photos.length; i++) {
+        if (i < loadedImages) {
+          continue;
+        }
+
+        const photo = participant.photos[i];
+        const { version, publicId } = photo;
+
+        const lqipUrl = `${BASE_URL}w_200,h_360,c_fill,g_face,f_auto,q_85,e_blur:800/${version}/${publicId}`;
+        await new Promise<void>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+          img.src = lqipUrl;
+        });
+
+        const hqUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${version}/${publicId}`;
+        await new Promise<void>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+          img.src = hqUrl;
+        });
+
+        setLoadedImages(i + 1);
+      }
+
+      isLoadingRef.current = false;
+    };
+
+    loadNextImage();
+  }, [participant, CLOUD_NAME, BASE_URL, loadedImages]);
 
   useEffect(() => {
     controls.start({
@@ -169,6 +191,16 @@ export default function ParticipantDetails({
             }}
           >
             {photos.map((photo, index) => {
+              if (index >= loadedImages) {
+                return (
+                  <div key={index} className={styles.participantImage}>
+                    <div className={styles.spinnerContainer}>
+                      <div className={styles.spinner} />
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <ParticipantImage
                   key={index}
