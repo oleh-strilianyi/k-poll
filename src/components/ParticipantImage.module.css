@@ -45,7 +45,7 @@
 
 .lqipImage {
   z-index: 1;
-  transition: opacity 0.3s ease-out;
+  opacity: 1;
 }
 
 .hqImage {

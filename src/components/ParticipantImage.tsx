@@ -17,7 +17,7 @@ export default function ParticipantImage({
 }: ParticipantImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const lqipUrl = `${baseUrl}w_200,h_360,c_fill,g_face,f_auto,q_30,e_blur:1000/${photo.version}/${photo.publicId}`;
+  const lqipUrl = `${baseUrl}w_200,h_360,c_fill,g_face,f_auto,q_85,e_blur:800/${photo.version}/${photo.publicId}`;
   const hqUrl = `${baseUrl}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${photo.version}/${photo.publicId}`;
 
   return (
@@ -32,7 +32,6 @@ export default function ParticipantImage({
         className={styles.lqipImage}
         src={lqipUrl}
         alt={participantName}
-        style={{ opacity: isLoaded ? 0 : 1 }}
         draggable="false"
       />
 

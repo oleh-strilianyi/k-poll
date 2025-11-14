@@ -33,14 +33,26 @@ export default function ParticipantDetails({
     updateWidth();
     window.addEventListener('resize', updateWidth);
 
-    if (!participant.photos || !CLOUD_NAME || !BASE_URL) return;
+    if (!participant.photos || !CLOUD_NAME || !BASE_URL) {
+      return () => {
+        window.removeEventListener('resize', updateWidth);
+      };
+    }
 
-    participant.photos.forEach((photo) => {
-      const { version, publicId } = photo;
-      const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${version}/${publicId}`;
-      const img = new Image();
-      img.src = imageUrl;
-    });
+    const preloadImagesSequentially = async () => {
+      for (const photo of participant.photos) {
+        await new Promise((resolve) => {
+          const { version, publicId } = photo;
+          const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${version}/${publicId}`;
+          const img = new Image();
+          img.src = imageUrl;
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      }
+    };
+
+    preloadImagesSequentially();
 
     return () => {
       window.removeEventListener('resize', updateWidth);
