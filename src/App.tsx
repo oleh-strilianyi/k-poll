@@ -6,12 +6,14 @@ import Header from './components/Header';
 import ParticipantRow from './components/ParticipantRow';
 import ClearDataModal from './components/ClearDataModal';
 import ParticipantDetails from './components/ParticipantDetails';
+import NewFeaturePopup from './components/NewFeaturePopup';
 import styles from './App.module.css';
 import { AnimatePresence } from 'framer-motion';
 
 const CURRENT_WEEK_ID = 4;
 const WEEK_ID_KEY = 'kholostyak-poll-week-id';
 const DATA_KEY = 'kholostyak-poll-data';
+const FEATURE_POPUP_KEY = 'k-poll-feature-discovery-seen';
 
 const getInitialData = (): ParticipantsState => {
   const initial: ParticipantsState = {};
@@ -33,6 +35,11 @@ function App() {
 
   const [selectedParticipant, setSelectedParticipant] =
     useState<Participant | null>(null);
+
+  const [hasSeenPopup, setHasSeenPopup] = useLocalStorage(
+    FEATURE_POPUP_KEY,
+    false
+  );
 
   useEffect(() => {
     const checkWeek = () => {
@@ -139,6 +146,12 @@ function App() {
             participant={selectedParticipant}
             onClose={handleCloseDetails}
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {!hasSeenPopup && (
+          <NewFeaturePopup onClose={() => setHasSeenPopup(true)} />
         )}
       </AnimatePresence>
     </div>
