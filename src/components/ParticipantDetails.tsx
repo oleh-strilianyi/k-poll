@@ -110,11 +110,12 @@ export default function ParticipantDetails({
     _e: MouseEvent | TouchEvent,
     { offset, velocity }: PanInfo
   ) => {
-    const swipeThreshold = containerWidth / 4;
+    const swipeThreshold = containerWidth / 6;
+    const velocityThreshold = 400;
 
-    if (offset.x < -swipeThreshold || velocity.x < -500) {
+    if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
       paginate(1);
-    } else if (offset.x > swipeThreshold || velocity.x > 500) {
+    } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
       paginate(-1);
     } else {
       controls.start({
