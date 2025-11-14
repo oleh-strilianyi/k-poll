@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './CommentModal.module.css';
 
 interface CommentModalProps {
@@ -33,7 +34,7 @@ export default function CommentModal({
     return null;
   }
 
-  return (
+  return createPortal(
     <>
       <div
         className={styles.backdrop}
@@ -59,6 +60,7 @@ export default function CommentModal({
           Зберегти
         </button>
       </div>
-    </>
+    </>,
+    document.body
   );
 }
