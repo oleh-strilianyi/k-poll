@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import type { Participant } from '../types';
 import styles from './ParticipantDetails.module.css';
 import { motion, type PanInfo, useAnimation } from 'framer-motion';
+import ParticipantImage from './ParticipantImage';
 
 interface ParticipantDetailsProps {
   participant: Participant;
@@ -156,14 +157,13 @@ export default function ParticipantDetails({
             }}
           >
             {photos.map((photo, index) => {
-              const imageUrl = `${BASE_URL}w_1080,h_1920,c_fill,g_face,f_auto,q_90/${photo.version}/${photo.publicId}`;
               return (
-                <motion.img
+                <ParticipantImage
                   key={index}
-                  src={imageUrl}
-                  alt={`${participant.name} ${index + 1}`}
+                  photo={photo}
+                  baseUrl={BASE_URL}
+                  participantName={participant.name}
                   className={styles.participantImage}
-                  draggable="false"
                 />
               );
             })}
