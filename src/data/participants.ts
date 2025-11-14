@@ -141,7 +141,7 @@ export const participants: Participant[] = [
     name: 'Діана Зотова',
     age: 21,
     description: 'Миколаїв, Діана – професійна модель. Відмінниця по життю',
-    instagramNickname: 'example.diana', 
+    instagramNickname: 'di__zotova', 
     photos: [
       { publicId: '16_mzzhdn.png', version: 'v1763039715' },
       { publicId: 'diana1_ymvvkl.jpg', version: 'v1763129039' },
