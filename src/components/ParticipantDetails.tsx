@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Participant } from '../types';
 import styles from './ParticipantDetails.module.css';
-import { motion, type PanInfo } from 'framer-motion';
+import { motion, type PanInfo, useAnimation } from 'framer-motion';
 
 interface ParticipantDetailsProps {
   participant: Participant;
@@ -17,6 +17,7 @@ export default function ParticipantDetails({
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
@@ -45,6 +46,17 @@ export default function ParticipantDetails({
     };
   }, [participant, CLOUD_NAME, BASE_URL]);
 
+  useEffect(() => {
+    controls.start({
+      x: `-${currentPhotoIndex * 100}%`,
+      transition: {
+        type: 'tween',
+        duration: 0.4,
+        ease: [0.4, 0, 0.2, 1],
+      },
+    });
+  }, [currentPhotoIndex, controls]);
+
   const { photos } = participant;
   const isFirstPhoto = currentPhotoIndex === 0;
   const isLastPhoto = currentPhotoIndex === photos.length - 1;
@@ -69,6 +81,15 @@ export default function ParticipantDetails({
       paginate(1);
     } else if (offset.x > swipeThreshold || velocity.x > 500) {
       paginate(-1);
+    } else {
+      controls.start({
+        x: `-${currentPhotoIndex * 100}%`,
+        transition: {
+          type: 'tween',
+          duration: 0.4,
+          ease: [0.4, 0, 0.2, 1],
+        },
+      });
     }
   };
 
@@ -127,12 +148,7 @@ export default function ParticipantDetails({
             className={styles.imageTrack}
             drag="x"
             onDragEnd={handleDragEnd}
-            animate={{ x: `-${currentPhotoIndex * 100}%` }}
-            transition={{
-              type: 'tween',
-              duration: 0.4,
-              ease: [0.4, 0, 0.2, 1],
-            }}
+            animate={controls}
             dragElastic={0.1}
             dragConstraints={{
               right: 0,
