@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import type { Participant, ParticipantData } from '../types';
-import StarRating from './StarRating';
-import MobileRating from './MobileRating';
-import CommentModal from './CommentModal';
-import { useIsMobile } from '../hooks/useIsMobile';
+import type { Participant, ParticipantData } from '../../types';
+import StarRating from './../Rating/StarRating';
+import MobileRating from './../Rating/MobileRating';
+import CommentModal from './../Modals/CommentModal';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import styles from './ParticipantRow.module.css';
 
 interface ParticipantRowProps {

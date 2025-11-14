@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import type { ParticipantsState, ParticipantData, Participant } from './types';
 import { participants } from './data/participants';
-import Header from './components/Header';
-import ParticipantRow from './components/ParticipantRow';
-import ClearDataModal from './components/ClearDataModal';
-import ParticipantDetails from './components/ParticipantDetails';
-import NewFeaturePopup from './components/NewFeaturePopup';
+import Header from './components/Layout/Header';
+import ParticipantRow from './components/Participant/ParticipantRow';
+import ClearDataModal from './components/Modals/ClearDataModal';
+import ParticipantDetails from './components/Participant/ParticipantDetails';
+import NewFeaturePopup from './components/UI/NewFeaturePopup';
+import DesktopWarningModal from './components/Modals/DesktopWarningModal';
+import { useIsMobile } from './hooks/useIsMobile';
 import styles from './App.module.css';
 import { AnimatePresence } from 'framer-motion';
 
@@ -40,6 +42,8 @@ function App() {
     FEATURE_POPUP_KEY,
     false
   );
+
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const checkWeek = () => {
@@ -154,6 +158,8 @@ function App() {
           <NewFeaturePopup onClose={() => setHasSeenPopup(true)} />
         )}
       </AnimatePresence>
+
+      {!isMobile && <DesktopWarningModal />}
     </div>
   );
 }
