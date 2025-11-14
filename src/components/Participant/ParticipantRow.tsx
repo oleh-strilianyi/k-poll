@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Participant, ParticipantData } from '../../types';
 import StarRating from './../Rating/StarRating';
 import MobileRating from './../Rating/MobileRating';
@@ -33,6 +33,28 @@ export default function ParticipantRow({
   const transforms = isMobile ? mobileTransforms : desktopTransforms;
 
   const dynamicImageUrl = `${BASE_URL}${transforms}/${version}/${publicId}`;
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsCommentModalOpen(false);
+    };
+
+    const stateId = `commentModal-${participant.id}`;
+
+    if (isCommentModalOpen) {
+      window.history.pushState({ modal: stateId }, '');
+      window.addEventListener('popstate', handlePopState);
+    } else {
+      window.removeEventListener('popstate', handlePopState);
+      if (window.history.state?.modal === stateId) {
+        window.history.back();
+      }
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isCommentModalOpen, participant.id]);
 
   const toggleContinue = () => {
     onDataChange({ ...data, willContinue: !data.willContinue });

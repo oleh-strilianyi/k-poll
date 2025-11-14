@@ -105,6 +105,27 @@ function App() {
     document.body.style.overflow = 'auto';
   };
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setSelectedParticipant(null);
+      document.body.style.overflow = 'auto';
+    };
+
+    if (selectedParticipant) {
+      window.history.pushState({ modal: 'participantDetails' }, '');
+      window.addEventListener('popstate', handlePopState);
+    } else {
+      window.removeEventListener('popstate', handlePopState);
+      if (window.history.state?.modal === 'participantDetails') {
+        window.history.back();
+      }
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [selectedParticipant]);
+
   return (
     <div className={styles.app}>
       <Header />
