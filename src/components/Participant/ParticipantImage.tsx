@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ParticipantPhoto } from '../types';
+import type { ParticipantPhoto } from '../../types';
 import styles from './ParticipantImage.module.css';
 
 interface ParticipantImageProps {
