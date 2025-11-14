@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FullStarIcon, HalfStarIcon, EmptyStarIcon } from './StarIcons';
-import { useTooltip } from '../contexts/TooltipContext';
+import { useTooltip } from '../../contexts/TooltipContext';
 import styles from './MobileRating.module.css';
 
 interface MobileRatingProps {

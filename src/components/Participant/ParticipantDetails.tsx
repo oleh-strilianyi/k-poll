@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import type { Participant } from '../types';
+import type { Participant } from '../../types';
 import styles from './ParticipantDetails.module.css';
 import { motion, type PanInfo, useAnimation } from 'framer-motion';
 import ParticipantImage from './ParticipantImage';
