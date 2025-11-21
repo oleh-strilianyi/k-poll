@@ -1,20 +1,20 @@
 import type { Participant } from '../types';
 
 export const participants: Participant[] = [
-  {
-    id: 1,
-    name: 'Яна Андрієнко',
-    age: 29,
-    description:
-      'Київ, вчителька',
-    instagramNickname: 'yanaaandrienko', 
-    photos: [
-      { publicId: '1_cqbgje.png', version: 'v1763039707' },
-      { publicId: 'yana1_usghid.jpg', version: 'v1763048295' },
-      { publicId: 'yana2_fvd0r1.jpg', version: 'v1763048551' },
-      { publicId: 'yana3_n1jsxr.jpg', version: 'v1763049028' },
-    ],
-  },
+  // {
+  //   id: 1,
+  //   name: 'Яна Андрієнко',
+  //   age: 29,
+  //   description:
+  //     'Київ, вчителька',
+  //   instagramNickname: 'yanaaandrienko', 
+  //   photos: [
+  //     { publicId: '1_cqbgje.png', version: 'v1763039707' },
+  //     { publicId: 'yana1_usghid.jpg', version: 'v1763048295' },
+  //     { publicId: 'yana2_fvd0r1.jpg', version: 'v1763048551' },
+  //     { publicId: 'yana3_n1jsxr.jpg', version: 'v1763049028' },
+  //   ],
+  // },
   {
     id: 3,
     name: 'Анастасія Половинкіна',
@@ -136,17 +136,17 @@ export const participants: Participant[] = [
       { publicId: 'irinap3_zlrwqh.jpg', version: 'v1763128522' },
     ],
   },
-  {
-    id: 16,
-    name: 'Діана Зотова',
-    age: 21,
-    description: 'Миколаїв, Діана – професійна модель. Відмінниця по життю',
-    instagramNickname: 'di__zotova', 
-    photos: [
-      { publicId: '16_mzzhdn.png', version: 'v1763039715' },
-      { publicId: 'diana1_ymvvkl.jpg', version: 'v1763129039' },
-      { publicId: 'diana2_myuqtm.jpg', version: 'v1763129037' },
-      { publicId: 'diana3_nt971w.jpg', version: 'v1763129037' },
-    ],
-  },
+  // {
+  //   id: 16,
+  //   name: 'Діана Зотова',
+  //   age: 21,
+  //   description: 'Миколаїв, Діана – професійна модель. Відмінниця по життю',
+  //   instagramNickname: 'di__zotova', 
+  //   photos: [
+  //     { publicId: '16_mzzhdn.png', version: 'v1763039715' },
+  //     { publicId: 'diana1_ymvvkl.jpg', version: 'v1763129039' },
+  //     { publicId: 'diana2_myuqtm.jpg', version: 'v1763129037' },
+  //     { publicId: 'diana3_nt971w.jpg', version: 'v1763129037' },
+  //   ],
+  // },
 ];
