@@ -110,19 +110,19 @@ export const participants: Participant[] = [
       { publicId: 'olha3_eduzeg.jpg', version: 'v1763127644' }
     ],
   },
-  {
-    id: 14,
-    name: 'Юлія Коренюк',
-    age: 35,
-    description: 'Одеса, Юлія — успішна fashion-фотографка з понад 10-річним досвідом',
-    instagramNickname: 'yuliakorenyuk', 
-    photos: [
-      { publicId: '14_xq6tqo.png', version: 'v1763039714' },
-      { publicId: 'yuliya1_oll4cr.jpg', version: 'v1763128078' },
-      { publicId: 'yuliya2_zo06xt.jpg', version: 'v1763128078' },
-      { publicId: 'yuliya3_zexch4.jpg', version: 'v1763128079' },
-    ],
-  },
+  // {
+  //   id: 14,
+  //   name: 'Юлія Коренюк',
+  //   age: 35,
+  //   description: 'Одеса, Юлія — успішна fashion-фотографка з понад 10-річним досвідом',
+  //   instagramNickname: 'yuliakorenyuk', 
+  //   photos: [
+  //     { publicId: '14_xq6tqo.png', version: 'v1763039714' },
+  //     { publicId: 'yuliya1_oll4cr.jpg', version: 'v1763128078' },
+  //     { publicId: 'yuliya2_zo06xt.jpg', version: 'v1763128078' },
+  //     { publicId: 'yuliya3_zexch4.jpg', version: 'v1763128079' },
+  //   ],
+  // },
   {
     id: 15,
     name: 'Ірина Пономаренко',
