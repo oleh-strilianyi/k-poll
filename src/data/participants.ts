@@ -71,19 +71,19 @@ export const participants: Participant[] = [
       { publicId: 'darya2_wkroh3.jpg', version: 'v1763126033' },
     ],
   },
-  {
-    id: 10,
-    name: 'Валерія Жуковська',
-    age: 28,
-    description: 'Миколаїв/Кельн, Професійна вершниця, майстриня спорту з виїздки, тренерка. Експертка з підбору та продажу спортивних коней',
-    instagramNickname: 'zhukovska.valerie',
-    photos: [
-      { publicId: '10_gvlvxb.png', version: 'v1763039703' },
-      { publicId: 'valeria1_swbvdb.jpg', version: 'v1763126600' },
-      { publicId: 'valeria2_ws4jmp.jpg', version: 'v1763126599' },
-      { publicId: 'valeria3_tx377t.jpg', version: 'v1763126599' },
-    ],
-  },
+  // {
+  //   id: 10,
+  //   name: 'Валерія Жуковська',
+  //   age: 28,
+  //   description: 'Миколаїв/Кельн, Професійна вершниця, майстриня спорту з виїздки, тренерка. Експертка з підбору та продажу спортивних коней',
+  //   instagramNickname: 'zhukovska.valerie',
+  //   photos: [
+  //     { publicId: '10_gvlvxb.png', version: 'v1763039703' },
+  //     { publicId: 'valeria1_swbvdb.jpg', version: 'v1763126600' },
+  //     { publicId: 'valeria2_ws4jmp.jpg', version: 'v1763126599' },
+  //     { publicId: 'valeria3_tx377t.jpg', version: 'v1763126599' },
+  //   ],
+  // },
   {
     id: 12,
     name: 'Ірина Кулешина',
