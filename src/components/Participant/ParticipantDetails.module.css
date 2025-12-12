@@ -156,14 +156,15 @@
   left: 0.5rem;
   right: 0.5rem;
   bottom: max(0.5rem, env(safe-area-inset-bottom));
-  background: white;
+  background: var(--bg-modal);
   border-radius: 16px;
   padding: 0.3rem 1rem 1rem 1rem;
   overflow-y: auto;
-  color: #1f2937;
+  color: var(--text-primary);
   height: auto;
   max-height: 40vh;
   z-index: 3;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .content h2 {
@@ -189,6 +190,6 @@
   font-size: 1rem;
   line-height: 1.4;
   text-align: justify;
-  color: #4b5563;
+  color: var(--text-secondary);
   margin: 0;
 }

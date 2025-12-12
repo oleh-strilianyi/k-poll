@@ -1,9 +1,10 @@
 .app {
   min-height: 100vh;
-  background: #f3f4f6;
+  background: var(--bg-primary);
   padding: 1rem;
   max-width: 600px;
   margin: 0 auto;
+  transition: background-color 0.3s;
 }
 
 .listContainer {

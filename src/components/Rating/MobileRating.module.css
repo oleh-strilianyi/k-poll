@@ -19,7 +19,7 @@
 
 .ratingPopup {
   position: fixed;
-  background: white;
+  background: var(--bg-modal);
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -27,7 +27,7 @@
   touch-action: none;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, background-color 0.3s;
 }
 
 .popupStars {
@@ -48,7 +48,7 @@
 .sliderTrack {
   position: relative;
   height: 8px;
-  background: #e5e7eb;
+  background: var(--border-element);
   border-radius: 4px;
   overflow: visible;
   width: 100%;
