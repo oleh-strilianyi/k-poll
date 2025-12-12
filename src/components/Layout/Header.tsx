@@ -6,7 +6,7 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <h1>Тиждень 8</h1>
+      <h1>Тиждень 9</h1>
       <button 
         className={styles.themeToggle} 
         onClick={toggleTheme}
