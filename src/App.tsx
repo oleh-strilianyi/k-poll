@@ -12,7 +12,7 @@ import { useIsMobile } from './hooks/useIsMobile';
 import styles from './App.module.css';
 import { AnimatePresence } from 'framer-motion';
 
-const CURRENT_WEEK_ID = 8;
+const CURRENT_WEEK_ID = 9;
 const WEEK_ID_KEY = 'kholostyak-poll-week-id';
 const DATA_KEY = 'kholostyak-poll-data';
 const FEATURE_POPUP_KEY = 'k-poll-feature-discovery-seen';
