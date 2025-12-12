@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Participant, ParticipantData } from '../../types';
 import StarRating from './../Rating/StarRating';
-import MobileRating from './../Rating/MobileRating';
 import CommentModal from './../Modals/CommentModal';
-import { useIsMobile } from '../../hooks/useIsMobile';
 import styles from './ParticipantRow.module.css';
 
 interface ParticipantRowProps {
@@ -21,17 +19,12 @@ export default function ParticipantRow({
 }: ParticipantRowProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const isMobile = useIsMobile();
 
   const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/`;
 
   const { publicId, version } = participant.photos[0];
-
-  const desktopTransforms = 'w_160,h_160,c_thumb,g_face,f_auto,q_85';
-  const mobileTransforms = 'w_60,h_60,c_thumb,g_face,f_auto,q_90';
-  const transforms = isMobile ? mobileTransforms : desktopTransforms;
-
+  const transforms = 'w_250,h_250,c_fill,g_face,f_auto,q_90';
   const dynamicImageUrl = `${BASE_URL}${transforms}/${version}/${publicId}`;
 
   useEffect(() => {
@@ -60,12 +53,6 @@ export default function ParticipantRow({
     onDataChange({ ...data, willContinue: !data.willContinue });
   };
 
-  const handleCommentChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    onDataChange({ ...data, comment: e.target.value });
-  };
-
   const handleSaveComment = (comment: string) => {
     onDataChange({ ...data, comment });
   };
@@ -80,85 +67,65 @@ export default function ParticipantRow({
 
   return (
     <>
-      <tr className={styles.participantRow}>
-        <td className={styles.participantInfo} data-label="Учасниця">
-          <div className={styles.participantContent}>
-            {!imageLoaded && (
-              <div className={styles.imagePlaceholder}>...</div>
-            )}
-            <img
-              src={dynamicImageUrl}
-              alt={participant.name}
-              className={styles.participantImage}
-              onLoad={() => setImageLoaded(true)}
-              style={{
-                display: imageLoaded ? 'block' : 'none',
-                cursor: 'pointer',
-              }}
-              onClick={handleAvatarClick}
-            />
-            <span className={styles.participantName}>{participant.name}</span>
-          </div>
-        </td>
-        <td data-label="Коментар">
-          {isMobile ? (
-            <div
-              className={styles.commentTrigger}
-              onClick={() => setIsCommentModalOpen(true)}
-              role="button"
-              tabIndex={0}
-            >
-              {data.comment || 'Додати коментар...'}
-            </div>
-          ) : (
-            <textarea
-              className={styles.commentInput}
-              value={data.comment}
-              onChange={handleCommentChange}
-              placeholder="Додати коментар..."
-              rows={2}
-            />
-          )}
-        </td>
-        <td className={styles.predictionCell} data-label="Прогноз">
-          <button
-            className={styles.predictionButton}
-            onClick={toggleContinue}
-            aria-label={
-              data.willContinue ? 'Отримає троянду' : 'Не отримає троянду'
-            }
-          >
-            <span className={styles.predictionEmoji}>
-              {data.willContinue ? '🌹' : '💔'}
+      <div className={styles.card}>
+        <div className={styles.sectionPhoto}>
+          {!imageLoaded && <div className={styles.imagePlaceholder}>...</div>}
+          <img
+            src={dynamicImageUrl}
+            alt={participant.name}
+            className={styles.participantImage}
+            onLoad={() => setImageLoaded(true)}
+            style={{ display: imageLoaded ? 'block' : 'none' }}
+            onClick={handleAvatarClick}
+          />
+        </div>
+
+        <div className={styles.sectionContent}>
+          <div className={styles.rowTop}>
+            <span className={styles.nameText}>
+              {participant.name}, {participant.age}
             </span>
-          </button>
-        </td>
-        <td className={styles.ratingCell} data-label="Рейтинг">
-          <div className={styles.ratingWrapper}>
-            <div className={styles.desktopRating}>
-              <StarRating
-                rating={data.rating}
-                onRatingChange={handleRatingChange}
-              />
+          </div>
+
+          <div className={styles.rowMiddle}>
+            <div 
+              className={styles.commentBox}
+              onClick={() => setIsCommentModalOpen(true)}
+            >
+              {data.comment ? (
+                <p className={styles.commentText}>{data.comment}</p>
+              ) : (
+                <span className={styles.commentPlaceholder}>Додати коментар...</span>
+              )}
             </div>
-            <div className={styles.mobileRating}>
-              <MobileRating
-                rating={data.rating}
-                onRatingChange={handleRatingChange}
-              />
+            
+            <div className={styles.roseContainer}>
+              <button
+                className={`${styles.roseButton} ${data.willContinue ? styles.roseActive : styles.roseInactive}`}
+                onClick={toggleContinue}
+                aria-label={data.willContinue ? 'Забрати розу' : 'Дати розу'}
+              >
+                <span className={styles.roseIcon}>🌹</span>
+              </button>
             </div>
           </div>
-        </td>
-      </tr>
-      {isMobile && (
-        <CommentModal
-          isOpen={isCommentModalOpen}
-          onClose={() => setIsCommentModalOpen(false)}
-          onSave={handleSaveComment}
-          initialValue={data.comment}
-          participantName={participant.name}
-        />
-      )}
+
+          <div className={styles.rowBottom}>
+            <StarRating
+              rating={data.rating}
+              onRatingChange={handleRatingChange}
+            />
+          </div>
+        </div>
+      </div>
+
+      <CommentModal
+        isOpen={isCommentModalOpen}
+        onClose={() => setIsCommentModalOpen(false)}
+        onSave={handleSaveComment}
+        initialValue={data.comment}
+        participantName={participant.name}
+      />
     </>
   );
 }

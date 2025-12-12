@@ -2,65 +2,18 @@
   min-height: 100vh;
   background: white;
   padding: 1rem;
-}
-
-.tableContainer {
-  max-width: 1200px;
+  max-width: 600px;
   margin: 0 auto;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
 }
 
-.participantsTable {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.participantsTable thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.participantsTable th {
-  padding: 1rem;
-  text-align: left;
-  font-weight: 600;
-  font-size: 1rem;
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 @media (max-width: 768px) {
   .app {
     padding: 0.5rem;
-  }
-
-  .tableContainer {
-    border-radius: 8px;
-    overflow-x: auto;
-  }
-
-  .participantsTable {
-    font-size: 0.75rem;
-  }
-
-  .participantsTable th {
-    padding: 0.3rem 0.15rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .app {
-    padding: 0.25rem;
-  }
-
-  .header {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-  }
-
-  .participantsTable thead {
-    display: none;
   }
 }

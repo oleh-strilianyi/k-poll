@@ -43,21 +43,21 @@ export const participants: Participant[] = [
       { publicId: 'nadin3_ohbsdh.jpg', version: 'v1763058063' },
     ],
   },
-  {
-    id: 6,
-    name: 'Оксана Шанюк',
-    age: 30,
-    description:
-      'Київ, Лікарка-косметологиня',
-    instagramNickname: 'oksana_shaniuk',
-    photos: [
-      { publicId: '6_f8egox.png', version: 'v1763039710' },
-      { publicId: 'oksana1_zrvfhk.jpg', version: 'v1763125370' },
-      { publicId: 'oksana2_jo1cgl.jpg', version: 'v1763125370' },
-      { publicId: 'oksana3_fi35na.jpg', version: 'v1763125370' }
+  // {
+  //   id: 6,
+  //   name: 'Оксана Шанюк',
+  //   age: 30,
+  //   description:
+  //     'Київ, Лікарка-косметологиня',
+  //   instagramNickname: 'oksana_shaniuk',
+  //   photos: [
+  //     { publicId: '6_f8egox.png', version: 'v1763039710' },
+  //     { publicId: 'oksana1_zrvfhk.jpg', version: 'v1763125370' },
+  //     { publicId: 'oksana2_jo1cgl.jpg', version: 'v1763125370' },
+  //     { publicId: 'oksana3_fi35na.jpg', version: 'v1763125370' }
       
-    ],
-  },
+  //   ],
+  // },
   {
     id: 9,
     name: 'Дарʼя Романець',
@@ -84,32 +84,32 @@ export const participants: Participant[] = [
   //     { publicId: 'valeria3_tx377t.jpg', version: 'v1763126599' },
   //   ],
   // },
-  {
-    id: 12,
-    name: 'Ірина Кулешина',
-    age: 30,
-    description: 'Кривий Ріг/Київ, Підприємиця',
-    instagramNickname: 'irina_yurievna_k', 
-    photos: [
-      { publicId: '12_doizvj.png', version: 'v1763039704' },
-      { publicId: 'irina1_xtescy.jpg', version: 'v1763126929' },
-      { publicId: 'irina2_hl11kw.jpg', version: 'v1763126929' },
-      { publicId: 'irina3_uonpco.jpg', version: 'v1763126928' }
-    ],
-  },
-  {
-    id: 13,
-    name: 'Ольга Дзундза',
-    age: 38,
-    description: 'Харків/Івано-Франківськ, Фітнес-тренерка, майстриня спорту з легкої атлетики по стрибках у висоту',
-    instagramNickname: 'olha_yevhenivna', 
-    photos: [
-      { publicId: '13_dgv2r5.png', version: 'v1763039705' },
-      { publicId: 'olha1_eyupf2.jpg', version: 'v1763127642' },
-      { publicId: 'olha2_ktjrmt.jpg', version: 'v1763127644' },
-      { publicId: 'olha3_eduzeg.jpg', version: 'v1763127644' }
-    ],
-  },
+  // {
+  //   id: 12,
+  //   name: 'Ірина Кулешина',
+  //   age: 30,
+  //   description: 'Кривий Ріг/Київ, Підприємиця',
+  //   instagramNickname: 'irina_yurievna_k', 
+  //   photos: [
+  //     { publicId: '12_doizvj.png', version: 'v1763039704' },
+  //     { publicId: 'irina1_xtescy.jpg', version: 'v1763126929' },
+  //     { publicId: 'irina2_hl11kw.jpg', version: 'v1763126929' },
+  //     { publicId: 'irina3_uonpco.jpg', version: 'v1763126928' }
+  //   ],
+  // },
+  // {
+  //   id: 13,
+  //   name: 'Ольга Дзундза',
+  //   age: 38,
+  //   description: 'Харків/Івано-Франківськ, Фітнес-тренерка, майстриня спорту з легкої атлетики по стрибках у висоту',
+  //   instagramNickname: 'olha_yevhenivna', 
+  //   photos: [
+  //     { publicId: '13_dgv2r5.png', version: 'v1763039705' },
+  //     { publicId: 'olha1_eyupf2.jpg', version: 'v1763127642' },
+  //     { publicId: 'olha2_ktjrmt.jpg', version: 'v1763127644' },
+  //     { publicId: 'olha3_eduzeg.jpg', version: 'v1763127644' }
+  //   ],
+  // },
   // {
   //   id: 14,
   //   name: 'Юлія Коренюк',

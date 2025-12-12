@@ -129,34 +129,22 @@ function App() {
   return (
     <div className={styles.app}>
       <Header />
-      <div className={styles.tableContainer}>
-        <table className={styles.participantsTable}>
-          <thead>
-            <tr>
-              <th style={{ width: '176px' }}>Учасниця</th>
-              <th>Коментар</th>
-              <th style={{ width: '100px' }}>Прогноз</th>
-              <th style={{ width: '120px' }}>Рейтинг</th>
-            </tr>
-          </thead>
-          <tbody>
-            {participants.map((participant) => (
-              <ParticipantRow
-                key={participant.id}
-                participant={participant}
-                data={
-                  participantsData[participant.id] || {
-                    comment: '',
-                    willContinue: true,
-                    rating: 0,
-                  }
-                }
-                onDataChange={(data) => handleDataChange(participant.id, data)}
-                onAvatarClick={handleAvatarClick}
-              />
-            ))}
-          </tbody>
-        </table>
+      <div className={styles.listContainer}>
+        {participants.map((participant) => (
+          <ParticipantRow
+            key={participant.id}
+            participant={participant}
+            data={
+              participantsData[participant.id] || {
+                comment: '',
+                willContinue: true,
+                rating: 0,
+              }
+            }
+            onDataChange={(data) => handleDataChange(participant.id, data)}
+            onAvatarClick={handleAvatarClick}
+          />
+        ))}
       </div>
 
       <ClearDataModal
