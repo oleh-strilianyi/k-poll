@@ -98,16 +98,6 @@ export default function ParticipantRow({
                 <span className={styles.commentPlaceholder}>Додати коментар...</span>
               )}
             </div>
-            
-            <div className={styles.roseContainer}>
-              <button
-                className={`${styles.roseButton} ${data.willContinue ? styles.roseActive : styles.roseInactive}`}
-                onClick={toggleContinue}
-                aria-label={data.willContinue ? 'Забрати розу' : 'Дати розу'}
-              >
-                <span className={styles.roseIcon}>🌹</span>
-              </button>
-            </div>
           </div>
 
           <div className={styles.rowBottom}>
@@ -116,6 +106,16 @@ export default function ParticipantRow({
               onRatingChange={handleRatingChange}
             />
           </div>
+        </div>
+
+        <div className={styles.roseContainer}>
+          <button
+            className={`${styles.roseButton} ${data.willContinue ? styles.roseActive : styles.roseInactive}`}
+            onClick={toggleContinue}
+            aria-label={data.willContinue ? 'Забрати розу' : 'Дати розу'}
+          >
+            <span className={styles.roseIcon}>🌹</span>
+          </button>
         </div>
       </div>
 

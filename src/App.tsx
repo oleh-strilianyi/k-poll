@@ -137,7 +137,7 @@ function App() {
             data={
               participantsData[participant.id] || {
                 comment: '',
-                willContinue: true,
+                willContinue: false,
                 rating: 0,
               }
             }
